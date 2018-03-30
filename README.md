@@ -84,7 +84,11 @@ But we don't care about being toooo accurate so we'll just do the quick and easy
 
     Y' = 0.299 R' + 0.587 G' + .114 B'
 
-Implement this conversion for the function `rgb_to_grayscale`.
+Using this conversion technique we get a pretty good grayscale image! Now it looks like this:
+
+![Grayscale colorbars](figs/gray.jpg)
+
+Implement this conversion for the function `rgb_to_grayscale`. Return a new image that is the same size but only one channel containing the calculated luma values.
 
 
 
