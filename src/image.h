@@ -13,9 +13,10 @@ void set_pixel(image im, int x, int y, int c, float v);
 image copy_image(image im);
 image grayscale_to_rgb(image im, float r, float g, float b);
 image rgb_to_grayscale(image im);
-image rgb_to_hsv(image im);
-image hsv_to_rgb(image im);
+void rgb_to_hsv(image im);
+void hsv_to_rgb(image im);
 image get_channel(image im, int c);
+image pad_image(image im, int n);
 
 
 // Loading and saving
