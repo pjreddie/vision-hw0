@@ -2,8 +2,6 @@
 *.dSYM
 *.csv
 *.out
-*.png
-*.jpg
 *.pyc
 .fuse*
 libuwimg*
