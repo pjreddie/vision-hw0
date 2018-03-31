@@ -150,11 +150,11 @@ and the resulting image, `fixed.jpg`:
 
 So far we've been focussing on RGB and grayscale images. But there are other colorspaces out there too we may want to play around with. Like [Hue, Saturation, and Value (HSV)](https://en.wikipedia.org/wiki/HSL_and_HSV). We will be translating the cubical colorspace of sRGB to the cylinder of hue, saturation, and value:
 
-![RGB HSV conversion](convert.png)
+![RGB HSV conversion](figs/convert.png)
 
 [Hue](https://en.wikipedia.org/wiki/Hue) can be thought of as the base color of a pixel. [Saturation](https://en.wikipedia.org/wiki/Colorfulness#Saturation) is the intensity of the color compared to white (the least saturated color). The [Value](https://en.wikipedia.org/wiki/Lightness) is the perception of brightness of a pixel compared to black. For a geometric interpretation of what this transformation:
 
-![RGB to HSV geometry](rgbtohsv.png)
+![RGB to HSV geometry](figs/rgbtohsv.png)
 
 Now, to be sure, there are [lots of issues](http://poynton.ca/notes/colour_and_gamma/ColorFAQ.html#RTFToC36) with this colorspace. But it's still fun to play around with and relatively easy to implement. The easiest component to calculate is the Value, it's just the largest of the 3 RGB components:
 
@@ -180,7 +180,7 @@ Finally, to calculate Hue we want to calculate how far around the color hexagon 
 
 We start counting at Red. Each step to a point on the hexagon counts as 1 unit distance. The distance between points is given by the relative ratios of the secondary colors. We can use the following formula from [Wikipedia](https://en.wikipedia.org/wiki/HSL_and_HSV#Hue_and_chroma):
 
-![hue equation](eq.svg)
+![hue equation](figs/eq.svg)
 
 However this gives us either H' = \[0, 6) or H = \[0, 360). We are going to use Hue in the range \[0, 1). So instead we'll calculate H as 
 
