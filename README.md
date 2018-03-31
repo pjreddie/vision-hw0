@@ -75,7 +75,7 @@ We can test out our pixel-setting code on the dog image by removing all of the r
 
 Then try running it. Check out our very not red dog:
 
-![](data/dog_no_red.jpg)
+![](figs/dog_no_red.jpg)
 
 
 ## 2. Copying images ##
@@ -180,7 +180,7 @@ Finally, to calculate Hue we want to calculate how far around the color hexagon 
 
 We start counting at Red. Each step to a point on the hexagon counts as 1 unit distance. The distance between points is given by the relative ratios of the secondary colors. We can use the following formula from [Wikipedia](https://en.wikipedia.org/wiki/HSL_and_HSV#Hue_and_chroma):
 
-![hue equation](figs/eq.svg)
+<img src="figs/eq.svg" width="256">
 
 Notice that we are going to have H = \[0,1) and it should circle around if it gets too large or goes negative. Thus we check to see if it is negative and add one if it is. This is slightly different than other methods where H is between 0 and 6 or 0 and 360. We will store the H, S, and V components in the same image, so simply replace the R channel with H, the G channel with S, etc.
 
