@@ -200,9 +200,22 @@ Finally, when your done we can mess with some images! In `tryit.py` we convert a
 
 ![Saturated dog picture](figs/dog_saturated.jpg)
 
-Hey that's exciting! Play around with it a little bit, see what you can make.
+Hey that's exciting! Play around with it a little bit, see what you can make. Note that with the above method we do get some artifacts because we are trying to increase the saturation in areas that have very little color. Instead of shifting the saturation, you could scale the saturation by some value to get smoother results!
 
-## 8. Super duper extra credit ##
+## 8. A small amount of extra credit ##
+
+Implement `void scale_image(image im, int c, float v);` to scale a channel by a certain amount. This will give us better saturation results. Note, you will have to add the necessary lines to the header and python library, it should be very similar to what's already there for `shift_image`. Now if we scale saturation by `2` instead of just shifting it all up we get much better results:
+
+    im = load_image("data/dog.jpg")
+    rgb_to_hsv(im)
+    scale_image(im, 1, 2)
+    clamp_image(im)
+    hsv_to_rgb(im)
+    save_image(im, "dog_scale_saturated")
+    
+![Dog saturated smoother](figs/dog_scale_saturated.jpg)
+
+## 9. Super duper extra credit ##
 
 Implement RGB to [Hue, Chroma, Lightness](https://en.wikipedia.org/wiki/CIELUV#Cylindrical_representation_.28CIELCH.29), a perceptually more accurate version of Hue, Saturation, Value. Note, this will involve gamma decompression, converting to CIEXYZ, converting to CIELUV, converting to HCL, and the reverse transformations. The upside is a similar colorspace to HSV but with better perceptual properties!
 
