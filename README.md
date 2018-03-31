@@ -31,7 +31,7 @@ You should also use:
 
 when you are done with an image. So it goes away. You can check out how all this is implemented in `src/load_image.c`. You probably shouldn't change anything in this file. We use the `stb_image` libary for the actual loading and saving of jpgs because that is, like, REALLY complicated. I think. I've never tried. Anywho....
 
-You'll be modifying the file `process_image.c`. We've also included a python compatability library. `uwimg.py` includes the code to access your C library from python. `tryit.py` has some example code you can run. We will build the library using `make`. Simply run the command:
+You'll be modifying the file `src/process_image.c`. We've also included a python compatability library. `uwimg.py` includes the code to access your C library from python. `tryit.py` has some example code you can run. We will build the library using `make`. Simply run the command:
 
     make
     
@@ -53,7 +53,7 @@ The convention is that the coordinate system starts at the top left of the image
 
 In our `data` array we store the image in `CHW` format. The first pixel in data is at channel 0, row 0, column 0. The next pixel is channel 0, row 0, column 1, then channel 0, row 0, column 2, etc.
 
-Your first task is to fill out these two functions in `process_image.c`:
+Your first task is to fill out these two functions in `src/process_image.c`:
 
     float get_pixel(image im, int x, int y, int c);
     void set_pixel(image im, int x, int y, int c, float v);
@@ -82,7 +82,7 @@ Then try running it. Check out our very not red dog:
 
 Sometimes you have an image and you want to copy it! To do this we should make a new image of the same size and then fill in the data array in the new image. You could do this by getting and setting pixels, by looping over the whole array and just copying the floats (pop quiz: if the image is 256x256x3, how many total pixels are there?), or by using the built-in memory copying function `memcpy`.
 
-Fill in the function `image copy_image(image im)` in `process_image.c` with your code.
+Fill in the function `image copy_image(image im)` in `src/process_image.c` with your code.
 
 ## 3. Grayscale image ##
 
@@ -210,6 +210,9 @@ Hey that's exciting! Play around with it a little bit, see what you can make.
 
 Implement RGB to [Hue, Chroma, Lightness](https://en.wikipedia.org/wiki/CIELUV#Cylindrical_representation_.28CIELCH.29), a perceptually more accurate version of Hue, Saturation, Value. Note, this will involve gamma decompression, converting to CIEXYZ, converting to CIELUV, converting to HCL, and the reverse transformations. The upside is a similar colorspace to HSV but with better perceptual properties!
 
+## Turn it in ##
+
+You only need to turn in one file, your `process_image.c`. Use the dropbox link on the class website.
 
 [1]: https://en.wikipedia.org/wiki/SRGB#The_sRGB_transfer_function_("gamma")
 [2]: https://en.wikipedia.org/wiki/Luma_(video)
