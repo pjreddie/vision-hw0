@@ -75,7 +75,7 @@ We can test out our pixel-setting code on the dog image by removing all of the r
 
 Then try running it. Check out our very not red dog:
 
-![](data/dog_no_red.jpg)
+![](figs/dog_no_red.jpg)
 
 
 ## 2. Copying images ##
@@ -152,7 +152,7 @@ So far we've been focussing on RGB and grayscale images. But there are other col
 
 ![RGB HSV conversion](figs/convert.png)
 
-[Hue](https://en.wikipedia.org/wiki/Hue) can be thought of as the base color of a pixel. [Saturation](https://en.wikipedia.org/wiki/Colorfulness#Saturation) is the intensity of the color compared to white (the least saturated color). The [Value](https://en.wikipedia.org/wiki/Lightness) is the perception of brightness of a pixel compared to black. For a geometric interpretation of what this transformation:
+[Hue](https://en.wikipedia.org/wiki/Hue) can be thought of as the base color of a pixel. [Saturation](https://en.wikipedia.org/wiki/Colorfulness#Saturation) is the intensity of the color compared to white (the least saturated color). The [Value](https://en.wikipedia.org/wiki/Lightness) is the perception of brightness of a pixel compared to black. You can try out this [demo](http://math.hws.edu/graphicsbook/demos/c2/rgb-hsv.html) to get a better feel for the differences between these two colorspaces. For a geometric interpretation of what this transformation:
 
 ![RGB to HSV geometry](figs/rgbtohsv.png)
 
@@ -180,7 +180,7 @@ Finally, to calculate Hue we want to calculate how far around the color hexagon 
 
 We start counting at Red. Each step to a point on the hexagon counts as 1 unit distance. The distance between points is given by the relative ratios of the secondary colors. We can use the following formula from [Wikipedia](https://en.wikipedia.org/wiki/HSL_and_HSV#Hue_and_chroma):
 
-![hue equation](figs/eq.svg)
+<img src="figs/eq.svg" width="256">
 
 Notice that we are going to have H = \[0,1) and it should circle around if it gets too large or goes negative. Thus we check to see if it is negative and add one if it is. This is slightly different than other methods where H is between 0 and 6 or 0 and 360. We will store the H, S, and V components in the same image, so simply replace the R channel with H, the G channel with S, etc.
 
@@ -200,9 +200,22 @@ Finally, when your done we can mess with some images! In `tryit.py` we convert a
 
 ![Saturated dog picture](figs/dog_saturated.jpg)
 
-Hey that's exciting! Play around with it a little bit, see what you can make.
+Hey that's exciting! Play around with it a little bit, see what you can make. Note that with the above method we do get some artifacts because we are trying to increase the saturation in areas that have very little color. Instead of shifting the saturation, you could scale the saturation by some value to get smoother results!
 
-## 8. Super duper extra credit ##
+## 8. A small amount of extra credit ##
+
+Implement `void scale_image(image im, int c, float v);` to scale a channel by a certain amount. This will give us better saturation results. Note, you will have to add the necessary lines to the header and python library, it should be very similar to what's already there for `shift_image`. Now if we scale saturation by `2` instead of just shifting it all up we get much better results:
+
+    im = load_image("data/dog.jpg")
+    rgb_to_hsv(im)
+    scale_image(im, 1, 2)
+    clamp_image(im)
+    hsv_to_rgb(im)
+    save_image(im, "dog_scale_saturated")
+    
+![Dog saturated smoother](figs/dog_scale_saturated.jpg)
+
+## 9. Super duper extra credit ##
 
 Implement RGB to [Hue, Chroma, Lightness](https://en.wikipedia.org/wiki/CIELUV#Cylindrical_representation_.28CIELCH.29), a perceptually more accurate version of Hue, Saturation, Value. Note, this will involve gamma decompression, converting to CIEXYZ, converting to CIELUV, converting to HCL, and the reverse transformations. The upside is a similar colorspace to HSV but with better perceptual properties!
 
