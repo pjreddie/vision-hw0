@@ -17,7 +17,7 @@ im = load_image("data/dog.jpg")
 shift_image(im, 0, .4)
 shift_image(im, 1, .4)
 shift_image(im, 2, .4)
-save_image(im, "doglight")
+save_image(im, "overflow")
 
 # 5. Clamp Image
 clamp_image(im)

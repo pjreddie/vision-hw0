@@ -71,7 +71,7 @@ We can test out our pixel-setting code on the dog image by removing all of the r
     for row in range(im.h):
         for col in range(im.w):
             set_pixel(im, row, col, 0, 0)
-    save_image(im, "dog_no_red")
+    save_image(im, "figs/dog_no_red")
 
 Then try running it. Check out our very not red dog:
 
@@ -182,11 +182,7 @@ We start counting at Red. Each step to a point on the hexagon counts as 1 unit d
 
 ![hue equation](figs/eq.svg)
 
-However this gives us either H' = \[0, 6) or H = \[0, 360). We are going to use Hue in the range \[0, 1). So instead we'll calculate H as 
-
-    H = H' / 6
-
-We will store the H, S, and V components in the same image, so simply replace the R channel with H, the G channel with S, etc.
+Notice that we are going to have H = \[0,1) and it should circle around if it gets too large or goes negative. Thus we check to see if it is negative and add one if it is. This is slightly different than other methods where H is between 0 and 6 or 0 and 360. We will store the H, S, and V components in the same image, so simply replace the R channel with H, the G channel with S, etc.
 
 ## 7. HSV to RGB ##
 
