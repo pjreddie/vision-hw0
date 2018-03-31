@@ -47,12 +47,18 @@ shift_image.argtypes = [IMAGE, c_int, c_float]
 clamp_image = lib.clamp_image
 clamp_image.argtypes = [IMAGE]
 
-load_image = lib.load_image
-load_image.argtypes = [c_char_p]
-load_image.restype = IMAGE
+load_image_lib = lib.load_image
+load_image_lib.argtypes = [c_char_p]
+load_image_lib.restype = IMAGE
 
-save_image = lib.save_image
-save_image.argtypes = [IMAGE, c_char_p]
+def load_image(f):
+    return load_image_lib(f.encode('ascii'))
+
+save_image_lib = lib.save_image
+save_image_lib.argtypes = [IMAGE, c_char_p]
+
+def save_image(im, f):
+    return save_image_lib(im, f.encode('ascii'))
 
 if __name__ == "__main__":
     im = load_image("data/dog.jpg")
