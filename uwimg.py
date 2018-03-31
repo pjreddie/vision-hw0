@@ -24,21 +24,28 @@ make_image.restype = IMAGE
 free_image = lib.free_image
 free_image.argtypes = [IMAGE]
 
-get_channel = lib.get_channel
-get_channel.argtypes = [IMAGE, c_int]
-get_channel.restype = IMAGE
+get_pixel = lib.get_pixel
+get_pixel.argtypes = [IMAGE, c_int, c_int, c_int]
+get_pixel.restype = c_float
 
-pad_image = lib.pad_image
-pad_image.argtypes = [IMAGE, c_int]
-pad_image.restype = IMAGE
-
-grayscale_to_rgb = lib.grayscale_to_rgb
-grayscale_to_rgb.argtypes = [IMAGE, c_float, c_float, c_float]
-grayscale_to_rgb.restype = IMAGE
+set_pixel = lib.set_pixel
+set_pixel.argtypes = [IMAGE, c_int, c_int, c_int, c_float]
 
 rgb_to_grayscale = lib.rgb_to_grayscale
 rgb_to_grayscale.argtypes = [IMAGE]
 rgb_to_grayscale.restype = IMAGE
+
+rgb_to_hsv = lib.rgb_to_hsv
+rgb_to_hsv.argtypes = [IMAGE]
+
+hsv_to_rgb = lib.hsv_to_rgb
+hsv_to_rgb.argtypes = [IMAGE]
+
+shift_image = lib.shift_image
+shift_image.argtypes = [IMAGE, c_int, c_float]
+
+clamp_image = lib.clamp_image
+clamp_image.argtypes = [IMAGE]
 
 load_image = lib.load_image
 load_image.argtypes = [c_char_p]

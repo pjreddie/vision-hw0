@@ -16,7 +16,7 @@ AR=ar
 ARFLAGS=rcs
 OPTS=-Ofast
 LDFLAGS= -lm -pthread 
-COMMON= -Iinclude/ -Isrc/ -flto
+COMMON= -Iinclude/ -Isrc/ 
 CFLAGS=-Wall -Wno-unknown-pragmas -Wfatal-errors -fPIC
 
 ifeq ($(OPENMP), 1) 
@@ -45,7 +45,7 @@ all: obj $(SLIB) $(ALIB) $(EXEC)
 #all: obj $(EXEC)
 
 
-$(EXEC): $(EXOBJ) $(OBJS)
+$(EXEC): $(EXOBJS) $(OBJS)
 	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS) 
 
 $(ALIB): $(OBJS)
@@ -63,5 +63,5 @@ obj:
 .PHONY: clean
 
 clean:
-	rm -rf $(OBJS) $(SLIB) $(ALIB) $(EXEC) $(EXOBJ) $(OBJDIR)/*
+	rm -rf $(OBJS) $(SLIB) $(ALIB) $(EXEC) $(EXOBJS) $(OBJDIR)/*
 
