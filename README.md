@@ -37,9 +37,11 @@ You'll be modifying the file `src/process_image.c`. We've also included a python
     
 after you make any changes to the code. Then you can quickly test your changes by running:
 
+    ./uwimg test
+
+You can also try running the example python code to generate some images:
+
     python tryit.py
-    
-and see what happens!
 
 ## 1. Getting and setting pixels ##
 
@@ -113,7 +115,7 @@ Using this conversion technique we get a pretty good grayscale image! Now we can
     graybar = rgb_to_grayscale(im)
     save_image(graybar, "graybar")
 
-![Grayscale colorbars](figs/gray.jpg)
+![Grayscale colorbars](figs/gray.png)
 
 Implement this conversion for the function `rgb_to_grayscale`. Return a new image that is the same size but only one channel containing the calculated luma values.
 
