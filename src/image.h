@@ -2,7 +2,7 @@
 #define IMAGE_H
 
 typedef struct{
-    int h,w,c;
+    int w,h,c;
     float *data;
 } image;
 
