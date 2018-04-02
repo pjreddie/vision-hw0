@@ -188,6 +188,8 @@ We start counting at Red. Each step to a point on the hexagon counts as 1 unit d
 
 <img src="figs/eq.svg" width="256">
 
+There is no "correct" Hue if C = 0 because all of the channels are equal so the color is a shade of gray, right in the center of the cylinder. However, for now let's just set H = 0 if C = 0 because then your implementation will match mine.
+
 Notice that we are going to have H = \[0,1) and it should circle around if it gets too large or goes negative. Thus we check to see if it is negative and add one if it is. This is slightly different than other methods where H is between 0 and 6 or 0 and 360. We will store the H, S, and V components in the same image, so simply replace the R channel with H, the G channel with S, etc.
 
 ## 7. HSV to RGB ##
