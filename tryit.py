@@ -4,7 +4,7 @@ from uwimg import *
 im = load_image("data/dog.jpg")
 for row in range(im.h):
     for col in range(im.w):
-        set_pixel(im, row, col, 0, 0)
+        set_pixel(im, col, row, 0, 0)
 save_image(im, "dog_no_red")
 
 # 3. Grayscale image
