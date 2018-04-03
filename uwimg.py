@@ -1,3 +1,4 @@
+import sys, os
 from ctypes import *
 import math
 import random
@@ -15,7 +16,8 @@ class IMAGE(Structure):
 
 
 #lib = CDLL("/home/pjreddie/documents/455/libuwimg.so", RTLD_GLOBAL)
-lib = CDLL("libuwimg.so", RTLD_GLOBAL)
+#lib = CDLL("libuwimg.so", RTLD_GLOBAL)
+lib = CDLL(os.path.join(os.path.dirname(__file__), "libuwimg.so"), RTLD_GLOBAL)
 
 make_image = lib.make_image
 make_image.argtypes = [c_int, c_int, c_int]
