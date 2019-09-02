@@ -4,15 +4,48 @@
 #include <math.h>
 #include "image.h"
 
+
+/* All the help Needed*/
+// Since the image is a struct that is defined like this
+// typedef struct{
+//     int w,h,c;           // w defines width // h defines height // c defines channels 
+//     float *data;   // data points to an array that contains all the data pixels in CHW format
+// }image;
+
+
+
+// WORKS FINE
 float get_pixel(image im, int x, int y, int c)
 {
     // TODO Fill this in
-    return 0;
+    // im struct contains *data which contains pixel values in the form of CHW(CHannel,Row, Colums)
+    // im has 4 data members that are h,w,c and *data
+    // int height = im_ptr->h;
+    // int width = im_ptr->w;
+    // int channels = im_ptr->c;
+    image * im_ptr;
+    im_ptr = &im;
+    float *data = im_ptr->data;
+    // float value = *(*(*(data+c)+x)+y));
+    // return value;
+
+    float(*data_matrix) [im.w][im.h] = data;
+    float value = *(*(*(data_matrix +c) + x) + y);
+    return value; 
 }
 
+// WORKS FINE BUT HAVE TO IMPLEMENT OVERFLOW
 void set_pixel(image im, int x, int y, int c, float v)
 {
     // TODO Fill this in
+    image * im_ptr;
+    im_ptr = &im;
+    float * data = im_ptr->data;
+
+    float(*data_matrix) [im.w][im.h] = data;
+    float * value = (*(*(data_matrix +c) + x) + y);
+    *value = v; 
+
 }
 
 image copy_image(image im)
