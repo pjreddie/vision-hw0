@@ -52,14 +52,60 @@ image copy_image(image im)
 {
     image copy = make_image(im.w, im.h, im.c);
     // TODO Fill this in
+    //memcpy (dest_struct, source_struct, sizeof (*dest_struct));
+    // image * copy_ptr = &copy;
+    memcpy(&copy, &im, sizeof(copy));          // Not Sure if this will work
+
     return copy;
 }
 
 image rgb_to_grayscale(image im)
 {
     assert(im.c == 3);
-    image gray = make_image(im.w, im.h, 1);
-    // TODO Fill this in
+    image gray = make_image(im.w, im.h, 1);        // Creates a image struct with *data contnaning 
+                                                   // 1 Channel
+
+    // Creating pointers to struct
+    // First  pointer to gray image
+    image * ptr_gray , * ptr_im;
+    // Point to the address of the struct objects
+    // Gray Image
+    ptr_gray = &gray; 
+    float * gray_data = ptr_gray->data;
+    float(*gray_data_matrix) [im.w][im.h] = gray_data;
+    // Given Image
+    ptr_im = &im; 
+    float * im_data = ptr_im->data;
+    float(*im_data_matrix) [im.w][im.h] = im_data;
+    // Now we have the weighted mean like:
+    //Y' = 0.299 R' + 0.587 G' + .114 B'
+
+    // So for a given *data I have to caculate the value over the whole 3-D Matrix
+    float red_matrix[im.h][im.w];
+    float green_matrix[im.h][im.w];
+    float blue_matrix[im.h][im.w];
+    for(int i= 0; i< im.h ; i++){
+        for(int j = 0; j < im.w ; j++){
+            // float  weighted_sum = 0;
+            for(int k = 0; k< im.c ;k++){
+                // *(*(gray_data_matrix+j)+k) = (*(*(im_data_matrix +k) + i) + j);
+                if(k == 0){
+                    red_matrix[i][j] = *(*(*(im_data_matrix +k) + i) + j)*0.299 ;
+                }
+                if(k == 1){
+                    green_matrix[i][j] =   *(*(*(im_data_matrix +k) + i) + j)*0.587;
+                }
+                if(k == 2){
+                    blue_matrix[i][j] = *(*(*(im_data_matrix +k) + i) + j)*0.114;
+                }
+                
+            }
+            *(*(gray_data_matrix+j)+i) = *(*(red_matrix + i)+j) + 
+                                            *(*(green_matrix + i)+j) + 
+                                                *(*(blue_matrix + i)+j);
+        }
+    }
+
     return gray;
 }
 
