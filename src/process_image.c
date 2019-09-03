@@ -32,7 +32,10 @@ float get_pixel(image im, int x, int y, int c)
 
     float(*data_matrix) [im.w][im.h] = data;
     float value = *(*(*(data_matrix +c) + x) + y);
+
+    free_image(im);
     return value; 
+    // free_image(im);
 }
 
 // WORKS FINE BUT HAVE TO IMPLEMENT OVERFLOW
@@ -46,6 +49,8 @@ void set_pixel(image im, int x, int y, int c, float v)
     float(*data_matrix) [im.w][im.h] = data;
     float * value = (*(*(data_matrix +c) + x) + y);
     *value = v; 
+
+    // free_image(im);
 
 }
 
@@ -74,6 +79,7 @@ image rgb_to_grayscale(image im)
     ptr_gray = &gray; 
     float * gray_data = ptr_gray->data;
     float(*gray_data_matrix) [im.w][im.h] = gray_data;
+    memset(gray_data_matrix, 0, sizeof gray_data_matrix); 
     // Given Image
     ptr_im = &im; 
     float * im_data = ptr_im->data;
@@ -98,14 +104,18 @@ image rgb_to_grayscale(image im)
         else if(channels == 2) value = 0.114;
         for(int width = 0; width < gray.w ; width++){
             for(int height = 0; height < gray.h; height++){
-                *gray_data_matrix[width][height] =  (*(*(*(im_data_matrix +channels) + width) + height))*value;
-                printf("%d \n", count);
-                printf("%f \n", *gray_data_matrix[width][height]);
+                *gray_data_matrix[width][height] +=  
+                (*(*(*(im_data_matrix +channels) + width) + height))*value;
+                printf("%d ", count);
+                printf("%f ", *gray_data_matrix[width][height]);
                 count ++;
             }
         
         }
     }
+
+    // free_image(im);
+    // free_image(gray);
 
     return gray;
 }
