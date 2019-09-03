@@ -2,6 +2,7 @@
 #include <string.h>
 #include <assert.h>
 #include <math.h>
+#include <stdlib.h>
 #include "image.h"
 
 
@@ -77,32 +78,32 @@ image rgb_to_grayscale(image im)
     ptr_im = &im; 
     float * im_data = ptr_im->data;
     float(*im_data_matrix) [im.w][im.h] = im_data;
+
+
+    // Define the data members of gray to be that of im:
+    ptr_gray->h = ptr_im->h;
+    ptr_gray->c = ptr_im->c;
+    ptr_gray->w = ptr_im->w;
+
     // Now we have the weighted mean like:
     //Y' = 0.299 R' + 0.587 G' + .114 B'
 
     // So for a given *data I have to caculate the value over the whole 3-D Matrix
-    float red_matrix[im.h][im.w];
-    float green_matrix[im.h][im.w];
-    float blue_matrix[im.h][im.w];
-    for(int i= 0; i< im.h ; i++){
-        for(int j = 0; j < im.w ; j++){
-            // float  weighted_sum = 0;
-            for(int k = 0; k< im.c ;k++){
-                // *(*(gray_data_matrix+j)+k) = (*(*(im_data_matrix +k) + i) + j);
-                if(k == 0){
-                    red_matrix[i][j] = *(*(*(im_data_matrix +k) + i) + j)*0.299 ;
-                }
-                if(k == 1){
-                    green_matrix[i][j] =   *(*(*(im_data_matrix +k) + i) + j)*0.587;
-                }
-                if(k == 2){
-                    blue_matrix[i][j] = *(*(*(im_data_matrix +k) + i) + j)*0.114;
-                }
-                
+    float value;
+    int count = 0;
+    for(int channels=0; channels < gray.c ; channels++){
+        printf("%d \n ", channels);
+        if(channels == 0) value = 0.299;
+        else if(channels == 1) value = 0.587;
+        else if(channels == 2) value = 0.114;
+        for(int width = 0; width < gray.w ; width++){
+            for(int height = 0; height < gray.h; height++){
+                *gray_data_matrix[width][height] =  (*(*(*(im_data_matrix +channels) + width) + height))*value;
+                printf("%d \n", count);
+                printf("%f \n", *gray_data_matrix[width][height]);
+                count ++;
             }
-            *(*(gray_data_matrix+j)+i) = *(*(red_matrix + i)+j) + 
-                                            *(*(green_matrix + i)+j) + 
-                                                *(*(blue_matrix + i)+j);
+        
         }
     }
 
