@@ -97,13 +97,13 @@ image rgb_to_grayscale(image im)
     // So for a given *data I have to caculate the value over the whole 3-D Matrix
     float value;
     int count = 0;
-    for(int channels=0; channels < gray.c ; channels++){
+    for(int channels=0; channels < im.c ; channels++){
         printf("%d \n ", channels);
         if(channels == 0) value = 0.299;
         else if(channels == 1) value = 0.587;
         else if(channels == 2) value = 0.114;
-        for(int width = 0; width < gray.w ; width++){
-            for(int height = 0; height < gray.h; height++){
+        for(int width = 0; width < im.w ; width++){
+            for(int height = 0; height < im.h; height++){
                 *gray_data_matrix[width][height] +=  
                 (*(*(*(im_data_matrix +channels) + width) + height))*value;
                 printf("%d ", count);
