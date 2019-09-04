@@ -79,7 +79,7 @@ image rgb_to_grayscale(image im)
     ptr_gray = &gray; 
     float * gray_data = ptr_gray->data;
     float(*gray_data_matrix) [im.w][im.h] = gray_data;
-    memset(gray_data_matrix, 0, sizeof gray_data_matrix); 
+    // memset(gray_data_matrix, 0, sizeof gray_data_matrix); 
     // Given Image
     ptr_im = &im; 
     float * im_data = ptr_im->data;
@@ -88,7 +88,7 @@ image rgb_to_grayscale(image im)
 
     // Define the data members of gray to be that of im:
     ptr_gray->h = ptr_im->h;
-    ptr_gray->c = ptr_im->c;
+    // ptr_gray->c = ptr_im->c;
     ptr_gray->w = ptr_im->w;
 
     // Now we have the weighted mean like:
