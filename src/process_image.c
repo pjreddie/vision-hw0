@@ -18,6 +18,12 @@
 // WORKS FINE
 float get_pixel(image im, int x, int y, int c)
 {
+    // Overflows Taken care of ::
+    if(x < 0) x = 0;
+    if(y < 0) y = 0;
+    if(x > im.w) x = im.w -1;
+    if(y > im.h) y = im.h -1 ;
+
     // TODO Fill this in
     // im struct contains *data which contains pixel values in the form of CHW(CHannel,Row, Colums)
     // im has 4 data members that are h,w,c and *data
@@ -41,6 +47,16 @@ float get_pixel(image im, int x, int y, int c)
 // WORKS FINE BUT HAVE TO IMPLEMENT OVERFLOW
 void set_pixel(image im, int x, int y, int c, float v)
 {
+    // Overflows taken care of
+    if (x < 0)
+        return;
+    if (y < 0)
+        return;
+    if (x > im.w)
+        return;
+    if (y > im.h)
+        return;
+        
     // TODO Fill this in
     image * im_ptr;
     im_ptr = &im;
