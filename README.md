@@ -1,12 +1,16 @@
 # CSE 455 Homework 0 #
 
-Welcome friends,
+Добро пожаловать друзья,
 
 For the first assignment we'll just get to know the codebase a little bit and practice manipulating images, transforming things, breaking stuff, it should be fun!
+
+Для начала мы немного познакомимся с базовыми основами написания кода и попрактикуемся работать с изображениями, будем трансоформировать их и творить с ними что хотим, вообщем будет весело.
 
 ## Image basics ##
 
 We have a pretty basic datastructure to store images in our library. The `image` struct stores the image metadata like width, height, and number of channels. It also contains the image data stored as a floating point array. You can check it out in `src/image.h`, it looks like this:
+
+У нас есть довольно простая структура данных для хранения изображений в нашей библиотеке. Структура `image` хранит метаданные изображения, такие как ширина, высота и количество каналов. Она также содержит данные изображения, хранящиеся в виде массива с плавающей запятой. Вы можете проверить это в `src / image.h`, это выглядит так:
 
     typedef struct{
         int h,w,c;
@@ -15,9 +19,13 @@ We have a pretty basic datastructure to store images in our library. The `image`
 
 We have also provided some functions for loading and saving images. Use the function:
 
+Также предусмотрены функции загрузки и сохранения изображений. Используйте функцию:
+
     image im = load_image("image.jpg");
 
 to load a new image. To save an image use:
+
+для загрузки нового изображения. Для сохранения ихображения, используйте:
 
     save_image(im, "output");
 
@@ -28,7 +36,7 @@ which will save the image as `output.jpg`. If you want to make a new image with 
 You should also use: 
 
     free_image(im);
-
+    
 when you are done with an image. So it goes away. You can check out how all this is implemented in `src/load_image.c`. You probably shouldn't change anything in this file. We use the `stb_image` libary for the actual loading and saving of jpgs because that is, like, REALLY complicated. I think. I've never tried. Anywho....
 
 You'll be modifying the file `src/process_image.c`. We've also included a python compatability library. `uwimg.py` includes the code to access your C library from python. `tryit.py` has some example code you can run. We will build the library using `make`. Simply run the command:
