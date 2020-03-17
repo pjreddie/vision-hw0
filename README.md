@@ -288,7 +288,11 @@ Notice that we are going to have H = \[0,1) and it should circle around if it ge
 
 Ok, now do it all backwards in `hsv_to_rgb`!
 
+Хорошо, теперь сделайте все в обратном направлении в `hsv_to_rgb`!
+
 Finally, when your done we can mess with some images! In `tryit.py` we convert an image to HSV, increase the saturation, then convert it back, lines 26-32:
+
+Наконец, когда вы закончите, мы можем начать работать с изображениями! В `tryit.py` мы конвертируем изображение в HSV, увеличиваем насыщенность, а затем конвертируем его обратно, строки 26-32:
 
     # 6-7. Colorspace and saturation
     im = load_image("data/dog.jpg")
@@ -302,9 +306,14 @@ Finally, when your done we can mess with some images! In `tryit.py` we convert a
 
 Hey that's exciting! Play around with it a little bit, see what you can make. Note that with the above method we do get some artifacts because we are trying to increase the saturation in areas that have very little color. Instead of shifting the saturation, you could scale the saturation by some value to get smoother results!
 
+Эй, это захватывающе! Поиграйте с этим немного, посмотрите, что вы можете сделать. Обратите внимание, что с помощью вышеуказанного метода мы получаем некоторые артефакты, потому что мы пытаемся увеличить насыщенность в областях, которые имеют очень мало цвета. Вместо смещения насыщенности вы можете масштабировать насыщенность на некоторое значение, чтобы получить более плавные результаты!
+
 ## 8. A small amount of extra credit ##
 
 Implement `void scale_image(image im, int c, float v);` to scale a channel by a certain amount. This will give us better saturation results. Note, you will have to add the necessary lines to the header and python library, it should be very similar to what's already there for `shift_image`. Now if we scale saturation by `2` instead of just shifting it all up we get much better results:
+
+Реализуйте `void scale_image (image im, int c, float v);`, чтобы масштабировать канал на определенную величину. Это даст нам лучшие результаты насыщенности. Обратите внимание, вам нужно будет добавить необходимые строки в библиотеку заголовков и python, это должно быть очень похоже на то, что уже есть для `shift_image`. Теперь, если мы масштабируем насыщенность на `2`, а не просто сдвигаем все это вверх, мы получаем гораздо лучшие результаты:
+
 
     im = load_image("data/dog.jpg")
     rgb_to_hsv(im)
@@ -319,9 +328,13 @@ Implement `void scale_image(image im, int c, float v);` to scale a channel by a 
 
 Implement RGB to [Hue, Chroma, Lightness](https://en.wikipedia.org/wiki/CIELUV#Cylindrical_representation_.28CIELCH.29), a perceptually more accurate version of Hue, Saturation, Value. Note, this will involve gamma decompression, converting to CIEXYZ, converting to CIELUV, converting to HCL, and the reverse transformations. The upside is a similar colorspace to HSV but with better perceptual properties!
 
+Реализуйте RGB в [Hue, Chroma, Lightness](https://en.wikipedia.org/wiki/CIELUV#Cylindrical_representation_.28CIELCH.29), для создания более точной версии Отенок, Насыщения, Значения. Обратите внимание, что это будет включать гамма-декомпрессию, преобразование в CIEXYZ, преобразование в CIELUV, преобразование в HCL и обратные преобразования. Достоинством является то же цветовое пространство, что и у HSV, но с лучшими свойствами восприятия!
+
 ## Turn it in ##
 
 You only need to turn in one file, your `process_image.c`. Use the dropbox link on the class website.
+
+Вам нужно только включить один файл, ваш `process_image.c`. Используйте ссылку Dropbox на сайте класса.
 
 [1]: https://en.wikipedia.org/wiki/SRGB#The_sRGB_transfer_function_("gamma")
 [2]: https://en.wikipedia.org/wiki/Luma_(video)
