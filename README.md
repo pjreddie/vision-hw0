@@ -31,23 +31,35 @@ to load a new image. To save an image use:
 
 which will save the image as `output.jpg`. If you want to make a new image with dimensions Width x Height x Channels you can call:
 
+которая сохранит изображение как `output.jpg`. Если вы хотите создать новое изображение с размерами Ширина х Высота х Каналы, вызовите функцию:
+
     image im = make_image(w,h,c);
 
 You should also use: 
+
+Вы также должны использовать:
 
     free_image(im);
     
 when you are done with an image. So it goes away. You can check out how all this is implemented in `src/load_image.c`. You probably shouldn't change anything in this file. We use the `stb_image` libary for the actual loading and saving of jpgs because that is, like, REALLY complicated. I think. I've never tried. Anywho....
 
+когда вы закончите работать с изображением. Чтобы отчистить его. Вы можете проверить, как все это реализовано в `src/load_image.c`. Вы, наверное, не должны ничего менять в этом файле. Мы используем библиотеку `stb_image` для загрузки и сохранения jpgs, потому что это ДЕЙСТВИТЕЛЬНО очень сложно. Я думаю. Я никогда не пробовал. Во всяком случае ....
+
 You'll be modifying the file `src/process_image.c`. We've also included a python compatability library. `uwimg.py` includes the code to access your C library from python. `tryit.py` has some example code you can run. We will build the library using `make`. Simply run the command:
+
+Вы будете изменять файл `src/process_image.c`. Мы также включили библиотеку совместимоти python. `uwimg.py` включает в себя код для доступа к вашей библиотеке C из python. `tryit.py` содержит пример кода, который вы можете запустить. Мы создадим библиотеку, используя `make`. Просто запустите команду:
 
     make
     
 after you make any changes to the code. Then you can quickly test your changes by running:
 
+после внесения каких-либо изменений в код. Затем вы сможете быстро проверить свои изменения, запустив:
+
     ./uwimg test
 
 You can also try running the example python code to generate some images:
+
+Вы также можете попробовать запустить пример кода python для генерации некоторых изображений:
 
     python tryit.py
 
@@ -55,26 +67,40 @@ You can also try running the example python code to generate some images:
 
 The most basic operation we want to do is change the pixels in an image. As we talked about in class, we represent an image as a 3 dimensional tensor. We have spatial information as well as multiple channels which combine together to form a color image:
 
+Самая основная операция, которую мы хотим сделать, это изменить пиксели изображения. Как мы говорили на уроке, мы представляем изображение как трехмерный тензор. У нас есть пространственная информация, а также несколько каналов, которые объединяются в цветное изображение:
+
 ![RGB format](figs/rgb.png)
 
 The convention is that the coordinate system starts at the top left of the image, like so:
+
+По общепринятому соглашению система координат начинается в верхнем левом углу изображения, вот так:
 
 ![Image coordinate system](figs/coords.png)
 
 In our `data` array we store the image in `CHW` format. The first pixel in data is at channel 0, row 0, column 0. The next pixel is channel 0, row 0, column 1, then channel 0, row 0, column 2, etc.
 
+В нашем массиве `data` мы храним изображение в формате `CHW`. Первый пиксель в данных - это канал 0, строка 0, столбец 0. Следующий пиксель - это канал 0, строка 0, столбец 1, затем канал 0, строка 0, столбец 2 и т. Д.
+
 Your first task is to fill out these two functions in `src/process_image.c`:
+
+Ваша первая задача - заполнить эти две функции в `src/process_image.c`:
 
     float get_pixel(image im, int x, int y, int c);
     void set_pixel(image im, int x, int y, int c, float v);
 
 `get_pixel` should return the pixel value at column `x`, row `y`, and channel `c`. `set_pixel` should set the pixel to the value `v`. You will need to do bounds checking to make sure the coordinates are valid for the image. `set_pixel` should simply return without doing anything if you pass in invalid coordinates. For `get_pixel` we will perform padding to the image. There are a number of possible padding strategies:
 
+`get_pixel` должен возвращать значение пикселя в столбце `x`, строке `y` и канале `c`. `set_pixel` должен установить для пикселя значение `v`. Вам нужно будет выполнить проверку границ, чтобы убедиться, что координаты валидны для изображения. `set_pixel` должен просто возвращаться, ничего не делая, если вы передаете неверные координаты. Для `get_pixel` мы будем выполнять заполнение изображения. Существует несколько возможных стратегий заполнения:
+
 ![Image padding strategies](figs/pad.png)
 
 We will use the `clamp` padding strategy. This means that if the programmer asks for a pixel at column -3, use column 0, or if they ask for column 300 and the image is only 256x256 you will use column 255 (because of zero-based indexing).
 
+Мы будем использовать `clamp` стратегию заполнения. Это означает, что если программист запрашивает пиксель в столбце -3, используется столбец 0 или если он запрашивает столбец 300, а размер изображения только 256x256, используется столбец 255 (индексация начинается с 0).
+
 We can test out our pixel-setting code on the dog image by removing all of the red channel. See line 3-8 in `tryit.py`:
+
+Мы можем проверить наш код установки пикселей на изображении собаки, удалив весь красный канал. Смотрите строку 3-8 в `tryit.py`:
 
     # 1. Getting and setting pixels
     im = load_image("data/dog.jpg")
@@ -84,6 +110,8 @@ We can test out our pixel-setting code on the dog image by removing all of the r
     save_image(im, "figs/dog_no_red")
 
 Then try running it. Check out our very not red dog:
+
+Затем попробуйте запустить его. Проверьте нашу очень не красную собаку:
 
 ![](figs/dog_no_red.jpg)
 
