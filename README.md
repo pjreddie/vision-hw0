@@ -154,13 +154,15 @@ Instead we are going to use a weighted sum. Now, there are a few ways to do this
 
 Вместо этого мы будем использовать взвешенную сумму. Есть несколько способов сделать это. Если бы мы хотели добиться максимально точного преобразования, потребовалось бы немало усилий. sRGB использует [гамма-сжатие][1], поэтому сначала нужно преобразовать цвет в линейный RGB, а затем вычислить [относительную яркость](https://en.wikipedia.org/wiki/Relative_luminance).
 
-But we don't care about being toooo accurate so we'll just do the quick and easy version instead. Video engineers use a calculation called [luma][2] to find an approximation of perceptual intensity when encoding video signal, we'll use that to convert our image to grayscale. It operates directly on the gamma compressed sRGB values that we already have! We simply perform a weighted sum:
+But we don't care about being toooo accurate so we'll just do the quick and easy version instead. Video engineers use a calculation called [lumaв][2] to find an approximation of perceptual intensity when encoding video signal, we'll use that to convert our image to grayscale. It operates directly on the gamma compressed sRGB values that we already have! We simply perform a weighted sum:
 
-Но мы не заботимся о том, чтобы быть слишком точными, поэтому вместо этого мы сделаем быструю и простую версию. Видеоинженеры используют вычисление, называемое [luma][2], чтобы найти приближение интенсивности восприятия при кодировании видеосигнала, мы будем использовать это для преобразования нашего изображения в оттенки серого. Он работает непосредственно с гамма-сжатыми значениями sRGB, которые у нас уже есть! Мы просто выполняем взвешенную сумму:
+Но мы не заботимся о том, чтобы быть слишком точными, поэтому вместо этого мы сделаем быструю и простую версию. Видеоинженеры используют вычисление, называемое [яркостью][2], чтобы найти приближение интенсивности восприятия при кодировании видеосигнала, мы будем использовать это для преобразования нашего изображения в оттенки серого. Он работает непосредственно с гамма-сжатыми значениями sRGB, которые у нас уже есть! Мы просто вычисляем взвешенную сумму:
 
     Y' = 0.299 R' + 0.587 G' + .114 B'
 
 Using this conversion technique we get a pretty good grayscale image! Now we can run `tryit.py` to output `graybar.jpg`. See lines 10-13:
+
+Используя эту технику преобразования, мы получаем довольно хорошее изображение в градациях серого! Теперь мы можем запустить `tryit.py` для вывода `graybar.jpg`. Смотрите строки 10-13:
 
     # 3. Grayscale image
     im = load_image("data/colorbar.png")
@@ -171,11 +173,17 @@ Using this conversion technique we get a pretty good grayscale image! Now we can
 
 Implement this conversion for the function `rgb_to_grayscale`. Return a new image that is the same size but only one channel containing the calculated luma values.
 
+Реализуйте это преобразование для функции `rgb_to_grayscale`. Верните новое изображение того же размера, но только один канал, содержащий рассчитанные значения яркости.
+
 ## 4. Shifting the image colors ##
 
 Now let's write a function to add a constant factor to a channel in an image. We can use this across every channel in the image to make the image brighter or darker. We could also use it to, say, shift an image to be more or less of a given color.
 
+Теперь давайте напишем функцию для добавления постоянного коэффициента к каналу в изображении. Мы можем использовать это для каждого канала изображения, чтобы сделать изображение ярче или темнее. Мы могли бы также использовать его, скажем, для смещения изображения, чтобы оно было более или менее определенного цвета.
+
 Fill in the code for `void shift_image(image im, int c, float v);`. It should add `v` to every pixel in channel `c` in the image. Now we can try shifting all the channels in an image by `.4` or 40%. See lines 15-20 in `tryit.py`:
+
+Заполните код для `void shift_image (image im, int c, float v);`. Следует добавить `v` к каждому пикселю в канале `c` на изображении. Теперь мы можем попробовать сместить все каналы в изображении на `.4` или на 40%. Смотрите строки 15-20 в `tryit.py`:
 
     # 4. Shift Image
     im = load_image("data/dog.jpg")
@@ -186,21 +194,31 @@ Fill in the code for `void shift_image(image im, int c, float v);`. It should ad
 
 But wait, when we look at the resulting image `overflow.jpg` we see something bad has happened! The light areas of the image went past 1 and when we saved the image back to disk it overflowed and made weird patterns:
 
+Но подождите, когда мы смотрим на получившееся изображение `overflow.jpg`, мы видим, что случилось что-то плохое! Светлые области изображения прошли через 1, и когда мы сохранили изображение обратно на диск, оно переполнилось и создало странные узоры:
+
 ![Overflow](figs/overflow.jpg)
 
 ## 5. Clamping the image values
 
 Our image pixel values have to be bounded. Generally images are stored as byte arrays where each red, green, or blue value is an unsigned byte between 0 and 255. 0 represents none of that color light and 255 represents that primary color light turned up as much as possible.
 
+Наши значения пикселей изображения должны быть ограничены. Обычно изображения хранятся в виде байтовых массивов, где каждое красное, зеленое или синее значение представляет собой байт без знака в диапазоне от 0 до 255. 0 не соответствует ни одному из этих цветных источников света, а 255 означает, что основной цветовой сигнал присутствует в максимально возможной степени.
+
 We represent our images using floating point values between 0 and 1. However, we still have to convert between our floating point representation and the byte arrays that are stored on disk. In the example above, our pixel values got above 1 so when we converted them back to byte arrays and saved them to disk they overflowed the byte data type and went back to very small values. That's why the very bright areas of the image looped around and became dark.
 
+Мы представляем наши изображения, используя значения с плавающей запятой в диапазоне от 0 до 1. Тем не менее, нам все еще необходимо выполнить преобразование между нашим представлением с плавающей запятой и байтовыми массивами, которые хранятся на диске. В приведенном выше примере наши значения пикселей стали больше 1, поэтому, когда мы преобразовали их обратно в байтовые массивы и сохранили их на диск, они переполнили тип данных байтов и вернулись к очень маленьким значениям. Вот почему очень яркие области изображения зацикливались и становились темными.
+
 We want to make sure the pixel values in the image stay between 0 and 1. Implement clamping on the image so that any value below zero gets set to zero and any value above 1 gets set to one. Fill in `void clamp_image(image im);` to modify the image in-place. Then when we clamp the shifted image and save it we see much better results, see lines 22-24 in `tryit.py`:
+
+Мы хотим, чтобы значения пикселей в изображении оставались в диапазоне от 0 до 1. Реализуем фиксирование изображения так, чтобы любое значение ниже нуля было установлено в ноль, а любое значение выше 1 - в единицу. Заполните `void fix_image (image im);`, чтобы изменить изображение. Затем, когда мы "зажимаем" смещенное изображение и сохраняем его, мы видим гораздо лучшие результаты, см. Строки 22-24 в `tryit.py`:
 
     # 5. Clamp Image
     clamp_image(im)
     save_image(im, "fixed")
 
 and the resulting image, `fixed.jpg`:
+
+и полученное изображение, `fixed.jpg`:
 
 ![](figs/fixed.jpg)
 
