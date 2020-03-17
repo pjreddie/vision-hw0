@@ -226,41 +226,63 @@ and the resulting image, `fixed.jpg`:
 
 So far we've been focussing on RGB and grayscale images. But there are other colorspaces out there too we may want to play around with. Like [Hue, Saturation, and Value (HSV)](https://en.wikipedia.org/wiki/HSL_and_HSV). We will be translating the cubical colorspace of sRGB to the cylinder of hue, saturation, and value:
 
+До сих пор мы фокусировались на RGB изображениях и градациях серого. Но есть и другие цветовые пространства, с которыми мы можем поиграть. Как [Оттенок, Насыщенность и Значение (HSV)](https://en.wikipedia.org/wiki/HSL_and_HSV). Мы будем переводить кубическое цветовое пространство sRGB в цилиндр оттенка, насыщенности и значения:
+
 ![RGB HSV conversion](figs/convert.png)
 
 [Hue](https://en.wikipedia.org/wiki/Hue) can be thought of as the base color of a pixel. [Saturation](https://en.wikipedia.org/wiki/Colorfulness#Saturation) is the intensity of the color compared to white (the least saturated color). The [Value](https://en.wikipedia.org/wiki/Lightness) is the perception of brightness of a pixel compared to black. You can try out this [demo](http://math.hws.edu/graphicsbook/demos/c2/rgb-hsv.html) to get a better feel for the differences between these two colorspaces. For a geometric interpretation of what this transformation:
+
+[Оттенок](https://en.wikipedia.org/wiki/Hue) можно рассматривать как базовый цвет пикселя. [Насыщенность](https://en.wikipedia.org/wiki/Colorfulness#Saturation) - это интенсивность цвета по сравнению с белым (наименее насыщенный цвет). [Значение](https://en.wikipedia.org/wiki/Lightness) - это восприятие яркости пикселя по сравнению с черным. Вы можете попробовать это [демо](http://math.hws.edu/graphicsbook/demos/c2/rgb-hsv.html), чтобы лучше понять различия между этими двумя цветовыми пространствами. Для геометрической интерпретации того, что это преобразование представляет:
 
 ![RGB to HSV geometry](figs/rgbtohsv.png)
 
 Now, to be sure, there are [lots of issues](http://poynton.ca/notes/colour_and_gamma/ColorFAQ.html#RTFToC36) with this colorspace. But it's still fun to play around with and relatively easy to implement. The easiest component to calculate is the Value, it's just the largest of the 3 RGB components:
 
+Сейчас, чтобы быть уверенным, что есть [много проблем](http://poynton.ca/notes/colour_and_gamma/ColorFAQ.html#RTFToC36) с этим цветовым пространством. Но по-прежнему весело играть и относительно легко реализовать. Самый простой компонент для расчета - это Значение, это самый большой из трех компонентов RGB:
+
     V = max(R,G,B)
 
 Next we can calculate Saturation. This is a measure of how much color is in the pixel compared to neutral white/gray. Neutral colors have the same amount of each three color components, so to calculate saturation we see how far the color is from being even across each component. First we find the minimum value
+
+Далее мы можем рассчитать Насыщенность. Это мера того, сколько цвета в пикселе по сравнению с нейтральным белым/серым. Нейтральные цвета имеют одинаковое количество каждого из трех цветовых компонентов, поэтому, чтобы вычислить насыщенность, мы видим, насколько далеко по каждому компоненту находится цвет. Сначала мы находим минимальное значение
 
     m = min(R,G,B)
 
 Then we see how far apart the min and max are:
 
+Затем мы видим, как далеко друг от друга находятся минимум и максимум:
+
     C = V - m
 
 and the Saturation will be the ratio between the difference and how large the max is:
+
+Насыщенность будет отношением между разницей и величиной максимума:
 
     S = C / V
 
 Except if R, G, and B are all 0. Because then V would be 0 and we don't want to divide by that, so just set the saturation 0 if that's the case.
 
+За исключением случаев, когда R, G и B равны 0. Потому что тогда V будет 0, и мы не хотим делить на это число, поэтому просто установите насыщенность 0, в этом случае.
+
 Finally, to calculate Hue we want to calculate how far around the color hexagon our target color is.
+
+Наконец, чтобы вычислить Оттенок, мы хотим рассчитать, насколько далеко вокруг цветового шестиугольника находится наш целевой цвет.
 
 ![color hex](figs/hex.png)
 
 We start counting at Red. Each step to a point on the hexagon counts as 1 unit distance. The distance between points is given by the relative ratios of the secondary colors. We can use the following formula from [Wikipedia](https://en.wikipedia.org/wiki/HSL_and_HSV#Hue_and_chroma):
 
+Мы начинаем считать в красном. Каждый шаг к точке на шестиугольнике считается за 1 единицу расстояния. Расстояние между точками определяется отношением вторичных цветов. Мы можем использовать следующую формулу из [Википедии](https://en.wikipedia.org/wiki/HSL_and_HSV#Hue_and_chroma):
+
 <img src="figs/eq.svg" width="256">
 
 There is no "correct" Hue if C = 0 because all of the channels are equal so the color is a shade of gray, right in the center of the cylinder. However, for now let's just set H = 0 if C = 0 because then your implementation will match mine.
 
+Не существует «правильного» Оттенка, если C = 0, потому что все каналы равны, поэтому цвет имеет оттенок серого, прямо в центре цилиндра. Однако сейчас давайте просто установим H = 0, если C = 0, потому что тогда ваша реализация будет соответствовать моей.
+
 Notice that we are going to have H = \[0,1) and it should circle around if it gets too large or goes negative. Thus we check to see if it is negative and add one if it is. This is slightly different than other methods where H is between 0 and 6 or 0 and 360. We will store the H, S, and V components in the same image, so simply replace the R channel with H, the G channel with S, etc.
+
+Обратите внимание, что у нас будет H = \[0,1) и он должен прокручиваться, если он становится слишком большим или становится отрицательным. Таким образом, мы проверяем, является ли он отрицательным, и добавляем один. Это немного отличается от других способов, где H находится между 0 и 6 или 0 и 360. Мы будем хранить компоненты H, S и V в одном изображении, поэтому просто заменим канал R на H, канал G на S, и т.п.
 
 ## 7. HSV to RGB ##
 
